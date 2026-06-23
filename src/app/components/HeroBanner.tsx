@@ -240,7 +240,7 @@ export function HeroBanner() {
           alignItems: "center",
           gap: "16px",
         }}
-        className="absolute bottom-[20px] left-1/2 -translate-x-1/2 max-md:static max-md:mt-6 max-md:left-auto max-md:transform-none"
+        className="relative md:absolute md:bottom-[20px] md:left-1/2 md:-translate-x-1/2"
       >
         <button
           onClick={() => go(-1)}
