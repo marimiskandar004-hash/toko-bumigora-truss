@@ -16,7 +16,7 @@ import { AdminProducts } from "./components/AdminProducts";
 import { Checkout } from "./components/Checkout";
 import { auth } from "../lib/firebase";
 import { HeroBanner } from "./components/HeroBanner";
-import { getProductById } from "./utils/productStore"; // Dikembalikan untuk menjaga kestabilan data dummy lawas
+import { getProductById } from "./utils/productStore"; 
 import { useCategoryPulse } from "./hooks/useCategoryPulse";
 import { CATEGORY_PATHS } from "./data/categories";
 
@@ -76,7 +76,7 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // 2. Mengembalikan fungsi load keranjang belanja bawaan asli agar tidak error tipe data
+  // 2. Mengembalikan fungsi load keranjang belanja bawaan asli
   useEffect(() => {
     try {
       const raw = localStorage.getItem(CART_KEY);
@@ -164,7 +164,7 @@ export default function App() {
   const totalCartCount = cartItems.reduce((a, i) => a + i.qty, 0);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f5f5f4" }}>
+    <div style={{ minHeight: "100vh", background: "#f5f5f4" }} className="w-full overflow-x-hidden p-0 m-0 block">
       <Navbar
         cartCount={totalCartCount}
         onCartOpen={() => setCartOpen(true)}
@@ -181,7 +181,6 @@ export default function App() {
       {path.startsWith("/product/") ? (
         (() => {
           const id = Number(path.replace("/product/", ""));
-          // AMAN: Menghapus passing database produk yang bikin error tipe data
           return <ProductDetail id={id} onAddToCart={addToCart} onNavigate={navigate} />;
         })()
       ) : path === "/admin/products" ? (
@@ -201,7 +200,6 @@ export default function App() {
           onNavigate={navigate}
         />
       ) : path.startsWith("/search") || CATEGORY_PATHS.includes(path) ? (
-        /* KUNCI UTAMA: Hanya jalankan sinkronisasi database MySQL ke halaman katalog kategori */
         <MaterialBuildingCatalog 
           onAddToCart={addToCart} 
           onNavigate={navigate} 
@@ -210,7 +208,7 @@ export default function App() {
           loading={loadingProducts}
         />
       ) : isSubCategory ? (
-        <main className="max-w-7xl mx-auto px-4 py-16 text-center">
+        <main className="w-full max-w-7xl mx-auto px-4 py-16 text-center block">
           <div style={{ fontSize: "4rem" }}>📦</div>
           <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#1c1917", marginTop: "16px" }}>
             {getCategoryName(path.split("/")[2])}
@@ -228,7 +226,7 @@ export default function App() {
           </button>
         </main>
       ) : (
-        <main>
+        <main className="w-full block clear-both p-0 m-0">
           <HeroBanner />
           <PromoBanner />
           <CategoryGrid
@@ -236,10 +234,8 @@ export default function App() {
             onCategoryNavigate={handleCategoryNavigate}
             isCategoryActive={isRouteActive}
           /> 
-          {/* AMAN: Mengembalikan beranda menggunakan data bawaan asli tanpa memicu error prop */}
           <FlashSale onAddToCart={addToCart} />
-          <ProductSection onAddToCart={addToCart}
-          onNavigate={navigate} />
+          <ProductSection onAddToCart={addToCart} onNavigate={navigate} />
           <BrandsSection />
         </main>
       )}
