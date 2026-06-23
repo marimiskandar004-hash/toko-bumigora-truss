@@ -128,40 +128,80 @@ export function Navbar({
           transition: "box-shadow 0.25s ease, background 0.25s ease",
           fontFamily: "'Inter', sans-serif",
         }}
-        className="sticky top-0 z-50"
+        className="sticky top-0 z-50 py-3 lg:py-0"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center gap-4 h-[68px]">
+          {/* Mengubah layout menjadi kolom vertikal di HP, berjejer horizontal di desktop */}
+          <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-4 lg:h-[68px]">
 
-            {/* Logo - Kembali ke Halaman Utama */}
-            <button
-              onClick={() => {
-                if (onNavigate) {
-                  onNavigate("/");
-                } else {
-                  window.location.href = "/";
-                }
-              }}
-              className="flex items-center gap-2.5 shrink-0 select-none"
-              style={{ background: "transparent", border: "none", cursor: "pointer", padding: 0 }}
-            >
-              <div style={{ background: "#ffffff", borderRadius: "6px", padding: "6px 8px" }} className="flex items-center gap-1.5">
-                <HardHat size={16} style={{ color: "#ea580c" }} />
-                <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: "0.95rem", fontWeight: 800, color: "#ea580c", letterSpacing: "-0.02em" }}>
-                  BUMIGORA<br />
-                  <span style={{ color: "#1c1917" }}>TRUSS</span>
-                </span>
-              </div>
-              <span
-                style={{ fontSize: "0.60rem", fontWeight: 600, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em", lineHeight: 1.2, maxWidth: "80px" }}
-                className="hidden md:block uppercase"
+            {/* Baris Atas Khusus Layar HP (Logo di kiri, Keranjang & Menu di kanan) */}
+            <div className="flex items-center justify-between gap-4 w-full lg:w-auto">
+              {/* Logo - Kembali ke Halaman Utama */}
+              <button
+                onClick={() => {
+                  if (onNavigate) {
+                    onNavigate("/");
+                  } else {
+                    window.location.href = "/";
+                  }
+                }}
+                className="flex items-center gap-2.5 shrink-0 select-none"
+                style={{ background: "transparent", border: "none", cursor: "pointer", padding: 0 }}
               >
-                Toko Material Terlengkap
-              </span>
-            </button>
+                <div style={{ background: "#ffffff", borderRadius: "6px", padding: "6px 8px" }} className="flex items-center gap-1.5">
+                  <HardHat size={16} style={{ color: "#ea580c" }} />
+                  <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: "0.95rem", fontWeight: 800, color: "#ea580c", letterSpacing: "-0.02em" }}>
+                    BUMIGORA<br />
+                    <span style={{ color: "#1c1917" }}>TRUSS</span>
+                  </span>
+                </div>
+                <span
+                  style={{ fontSize: "0.60rem", fontWeight: 600, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em", lineHeight: 1.2, maxWidth: "80px" }}
+                  className="hidden md:block uppercase text-left"
+                >
+                  Toko Material Terlengkap
+                </span>
+              </button>
 
-            {/* Search bar */}
-            <div className="flex-1 max-w-2xl">
+              {/* Tombol Keranjang & Hamburger Khusus Tampilan Layar HP */}
+              <div className="flex items-center gap-2 lg:hidden">
+                {/* Cart Mobile */}
+                <button
+                  onClick={onCartOpen}
+                  style={{
+                    background: "#1c1917", borderRadius: "8px", color: "#ffffff",
+                    position: "relative", padding: "8px 12px", display: "flex",
+                    alignItems: "center", gap: "8px", border: "none", cursor: "pointer",
+                  }}
+                >
+                  <ShoppingCart size={18} />
+                  <span
+                    style={{
+                      position: "absolute", top: "-5px", right: "-5px",
+                      background: cartCount > 0 ? "#fbbf24" : "#52525b",
+                      color: cartCount > 0 ? "#1c1917" : "#ffffff", 
+                      fontSize: "10px", fontWeight: 800, minWidth: "18px",
+                      height: "18px", borderRadius: "9px", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                    }}
+                  >
+                    {cartCount}
+                  </span>
+                </button>
+
+                {/* Hamburger Mobile */}
+                <button
+                  onClick={() => setMobileOpen((v) => !v)}
+                  style={{ color: "rgba(255,255,255,0.85)" }}
+                  className="p-1.5 hover:text-white transition-colors"
+                >
+                  {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Search bar - Melebar penuh di HP, menyesuaikan di desktop */}
+            <div className="w-full lg:flex-1 max-w-2xl">
               <div
                 style={{
                   background: "#ffffff",
@@ -215,11 +255,11 @@ export function Navbar({
               </div>
             </div>
 
-            {/* Right actions */}
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Right actions Desktop (Otomatis disembunyikan di HP) */}
+            <div className="hidden lg:flex items-center gap-2 shrink-0">
               <button
                 style={{ color: "rgba(255,255,255,0.85)" }}
-                className="hidden md:flex p-1.5 hover:text-white transition-colors"
+                className="p-1.5 hover:text-white transition-colors"
                 aria-label="Wishlist"
               >
                 <Heart size={20} />
@@ -235,7 +275,7 @@ export function Navbar({
                       padding: "6px 10px", border: "none", cursor: "pointer",
                       color: "#ffffff", transition: "background 0.15s",
                     }}
-                    className="hidden lg:flex hover:bg-white/20"
+                    className="hover:bg-white/20"
                   >
                     <div style={{
                       background: "#1c1917", borderRadius: "50%", width: "28px", height: "28px",
@@ -287,14 +327,14 @@ export function Navbar({
                 <button
                   onClick={onLoginClick}
                   style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", fontWeight: 500 }}
-                  className="hidden lg:flex flex-col items-center gap-0.5 hover:text-white transition-colors p-1.5"
+                  className="flex flex-col items-center gap-0.5 hover:text-white transition-colors p-1.5"
                 >
                   <User size={19} />
                   <span style={{ letterSpacing: "0.02em", lineHeight: 1 }}>Masuk</span>
                 </button>
               )}
 
-              {/* Cart */}
+              {/* Cart Desktop */}
               <button
                 onClick={onCartOpen}
                 style={{
@@ -306,34 +346,13 @@ export function Navbar({
                 className="hover:bg-stone-700"
               >
                 <ShoppingCart size={18} />
-                <div className="hidden sm:flex flex-col items-start" style={{ lineHeight: 1.1 }}>
+                <div className="flex flex-col items-start" style={{ lineHeight: 1.1 }}>
                   <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.55)", letterSpacing: "0.04em" }}>KERANJANG</span>
                   <span style={{ fontSize: "0.8rem", fontWeight: 700 }}>{cartCount} item</span>
                 </div>
-                <span
-                  style={{
-                    position: "absolute", top: "-5px", right: "-5px",
-                    background: cartCount > 0 ? "#fbbf24" : "#52525b",
-                    color: cartCount > 0 ? "#1c1917" : "#ffffff", 
-                    fontSize: "10px", fontWeight: 800, minWidth: "18px",
-                    height: "18px", borderRadius: "9px", display: "flex",
-                    alignItems: "center", justifyContent: "center",
-                  }}
-                  className="sm:hidden"
-                >
-                  {cartCount}
-                </span>
-              </button>
-
-              {/* Hamburger */}
-              <button
-                onClick={() => setMobileOpen((v) => !v)}
-                style={{ color: "rgba(255,255,255,0.85)" }}
-                className="lg:hidden p-1.5 hover:text-white transition-colors"
-              >
-                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             </div>
+
           </div>
         </div>
 
@@ -382,7 +401,7 @@ export function Navbar({
                   <ChevronDown size={12} className={`transition-transform duration-200 ${activeDropdown === "mega-menu" ? "rotate-180" : ""}`} />
                 </button>
 
-                {/* MODERNISED MEGA MENU PANEL (Aman Terbatas Lebar Container) */}
+                {/* MODERNISED MEGA MENU PANEL */}
                 {activeDropdown === "mega-menu" && (
                   <div
                     style={{
@@ -526,10 +545,14 @@ export function Navbar({
           style={{ background: "#1c1917", fontFamily: "'Inter', sans-serif", position: "sticky", top: "68px", zIndex: 40 }}
           className="lg:hidden"
         >
+          {/* Pencarian khusus di dalam menu drawer mobile */}
           <div style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }} className="flex items-center gap-3 px-6 py-3">
             <Search size={14} style={{ color: "#52525b" }} />
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && { handleSearch, setMobileOpen: () => setMobileOpen(false) }}
               placeholder='Cari "semen", "pipa", "cat"…'
               style={{ background: "transparent", border: "none", outline: "none", fontSize: "0.875rem", color: "#f4f4f5", width: "100%" }}
               className="placeholder-stone-500"
