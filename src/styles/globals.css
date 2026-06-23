@@ -1,0 +1,21 @@
+.category-switch-ripple {
+  position: absolute;
+  inset: 5px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0) 62%);
+  pointer-events: none;
+  animation: category-switch-ripple 0.43s ease-out forwards;
+}
+
+@keyframes category-switch-ripple {
+  0% {
+    opacity: 0.78;
+    transform: scale(0.82);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.22);
+  }
+}
