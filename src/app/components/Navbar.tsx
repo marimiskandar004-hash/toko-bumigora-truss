@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   Search, ShoppingCart, User, Phone, MapPin, Menu, X,
-  ChevronDown, Tag, Truck, HardHat, Wrench, Layers, Zap,
-  Home, Droplets, Heart, LogOut,
+  ChevronDown, Tag, Truck, HardHat, Heart, LogOut,
 } from "lucide-react";
 import type { User as FirebaseUser } from "firebase/auth";
 import {
@@ -61,7 +60,6 @@ export function Navbar({
 
   const navigateToCategory = (label: string, closeMobile = false) => {
     onCategoryNavigate(label);
-
     if (closeMobile) {
       setMobileOpen(false);
     }
@@ -128,15 +126,16 @@ export function Navbar({
           transition: "box-shadow 0.25s ease, background 0.25s ease",
           fontFamily: "'Inter', sans-serif",
         }}
-        className="sticky top-0 z-50 py-3 lg:py-0"
+        className="sticky top-0 z-50 py-2.5 lg:py-0"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          {/* Mengubah layout menjadi kolom vertikal di HP, berjejer horizontal di desktop */}
-          <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-4 lg:h-[68px]">
+          {/* Menggunakan fleksibilitas penuh: Vertikal di HP, Tinggi kaku 68px hanya di Desktop */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 lg:gap-4 lg:h-[68px]">
 
-            {/* Baris Atas Khusus Layar HP (Logo di kiri, Keranjang & Menu di kanan) */}
-            <div className="flex items-center justify-between gap-4 w-full lg:w-auto">
-              {/* Logo - Kembali ke Halaman Utama */}
+            {/* BARIS UTAMA UNTUK HP (Logo kiri, Aksi kanan) */}
+            <div className="flex items-center justify-between w-full lg:w-auto shrink-0">
+              
+              {/* Logo */}
               <button
                 onClick={() => {
                   if (onNavigate) {
@@ -145,43 +144,55 @@ export function Navbar({
                     window.location.href = "/";
                   }
                 }}
-                className="flex items-center gap-2.5 shrink-0 select-none"
+                className="flex items-center gap-2 select-none text-left"
                 style={{ background: "transparent", border: "none", cursor: "pointer", padding: 0 }}
               >
-                <div style={{ background: "#ffffff", borderRadius: "6px", padding: "6px 8px" }} className="flex items-center gap-1.5">
-                  <HardHat size={16} style={{ color: "#ea580c" }} />
-                  <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: "0.95rem", fontWeight: 800, color: "#ea580c", letterSpacing: "-0.02em" }}>
+                <div style={{ background: "#ffffff", borderRadius: "6px", padding: "4px 6px" }} className="flex items-center gap-1">
+                  <HardHat size={14} style={{ color: "#ea580c" }} className="sm:w-4 sm:h-4" />
+                  <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: "0.8rem", fontWeight: 800, color: "#ea580c", letterSpacing: "-0.02em", lineHeight: 1.1 }} className="sm:text-[0.95rem]">
                     BUMIGORA<br />
                     <span style={{ color: "#1c1917" }}>TRUSS</span>
                   </span>
                 </div>
                 <span
-                  style={{ fontSize: "0.60rem", fontWeight: 600, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em", lineHeight: 1.2, maxWidth: "80px" }}
-                  className="hidden md:block uppercase text-left"
+                  style={{ fontSize: "0.58rem", fontWeight: 600, color: "rgba(255,255,255,0.7)", letterSpacing: "0.04em", lineHeight: 1.2, maxWidth: "75px" }}
+                  className="hidden md:block uppercase"
                 >
                   Toko Material Terlengkap
                 </span>
               </button>
 
-              {/* Tombol Keranjang & Hamburger Khusus Tampilan Layar HP */}
-              <div className="flex items-center gap-2 lg:hidden">
+              {/* Tombol Aksi Khusus Tampilan Layar HP */}
+              <div className="flex items-center gap-1.5 lg:hidden">
+                {/* Tombol Masuk/User (Hanya muncul jika belum login di HP) */}
+                {!user && (
+                  <button
+                    onClick={onLoginClick}
+                    style={{ color: "#ffffff", background: "rgba(0,0,0,0.15)", borderRadius: "8px", padding: "8px 10px" }}
+                    className="flex items-center gap-1 text-[0.75rem] font-medium border-none cursor-pointer"
+                  >
+                    <User size={15} />
+                    <span>Masuk</span>
+                  </button>
+                )}
+
                 {/* Cart Mobile */}
                 <button
                   onClick={onCartOpen}
                   style={{
                     background: "#1c1917", borderRadius: "8px", color: "#ffffff",
                     position: "relative", padding: "8px 12px", display: "flex",
-                    alignItems: "center", gap: "8px", border: "none", cursor: "pointer",
+                    alignItems: "center", justifyContent: "center", border: "none", cursor: "pointer",
                   }}
                 >
-                  <ShoppingCart size={18} />
+                  <ShoppingCart size={16} />
                   <span
                     style={{
-                      position: "absolute", top: "-5px", right: "-5px",
+                      position: "absolute", top: "-4px", right: "-4px",
                       background: cartCount > 0 ? "#fbbf24" : "#52525b",
                       color: cartCount > 0 ? "#1c1917" : "#ffffff", 
-                      fontSize: "10px", fontWeight: 800, minWidth: "18px",
-                      height: "18px", borderRadius: "9px", display: "flex",
+                      fontSize: "9px", fontWeight: 800, minWidth: "16px",
+                      height: "16px", borderRadius: "8px", display: "flex",
                       alignItems: "center", justifyContent: "center",
                     }}
                   >
@@ -189,27 +200,27 @@ export function Navbar({
                   </span>
                 </button>
 
-                {/* Hamburger Mobile */}
+                {/* Hamburger Menu Mobile */}
                 <button
                   onClick={() => setMobileOpen((v) => !v)}
-                  style={{ color: "rgba(255,255,255,0.85)" }}
-                  className="p-1.5 hover:text-white transition-colors"
+                  style={{ color: "#ffffff", background: "rgba(255,255,255,0.1)", borderRadius: "8px", padding: "6px" }}
+                  className="border-none cursor-pointer hover:bg-white/20 transition-colors"
                 >
-                  {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                  {mobileOpen ? <X size={20} /> : <Menu size={20} />}
                 </button>
               </div>
             </div>
 
-            {/* Search bar - Melebar penuh di HP, menyesuaikan di desktop */}
+            {/* SEARCH BAR (Lebar penuh di HP, Fleksibel otomatis di desktop) */}
             <div className="w-full lg:flex-1 max-w-2xl">
               <div
                 style={{
                   background: "#ffffff",
                   borderRadius: "8px",
                   overflow: "hidden",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.12)",
                 }}
-                className="flex items-stretch h-[42px]"
+                className="flex items-stretch h-[38px] lg:h-[42px]"
               >
                 <input
                   type="text"
@@ -221,9 +232,9 @@ export function Navbar({
                     flex: 1,
                     border: "none",
                     outline: "none",
-                    fontSize: "0.85rem",
+                    fontSize: "0.82rem",
                     color: "#1c1917",
-                    paddingLeft: "14px",
+                    paddingLeft: "12px",
                     background: "transparent",
                   }}
                   className="placeholder-stone-400"
@@ -233,29 +244,27 @@ export function Navbar({
                   onClick={handleSearch}
                   style={{
                     background: "#1c1917",
-                    padding: "0 18px",
+                    padding: "0 14px",
                     display: "flex",
                     alignItems: "center",
-                    gap: "6px",
+                    gap: "5px",
                     color: "#ffffff",
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     fontWeight: 600,
-                    letterSpacing: "0.03em",
                     borderRadius: "0 8px 8px 0",
                     flexShrink: 0,
-                    transition: "background 0.15s",
                     border: "none",
                     cursor: "pointer",
                   }}
                   className="hover:bg-stone-700"
                 >
-                  <Search size={15} />
-                  <span className="hidden sm:inline">Cari</span>
+                  <Search size={14} />
+                  <span>Cari</span>
                 </button>
               </div>
             </div>
 
-            {/* Right actions Desktop (Otomatis disembunyikan di HP) */}
+            {/* ACTIONS KHUSUS DESKTOP (Disembunyikan sepenuhnya di HP) */}
             <div className="hidden lg:flex items-center gap-2 shrink-0">
               <button
                 style={{ color: "rgba(255,255,255,0.85)" }}
@@ -356,7 +365,7 @@ export function Navbar({
           </div>
         </div>
 
-        {/* Sub-Header Area (Black Bar Nav) */}
+        {/* Sub-Header Area (Black Bar Nav - Hanya Desktop) */}
         <div 
           style={{ background: "#1c1917", fontFamily: "'Inter', sans-serif" }} 
           className="hidden lg:block relative"
@@ -401,7 +410,7 @@ export function Navbar({
                   <ChevronDown size={12} className={`transition-transform duration-200 ${activeDropdown === "mega-menu" ? "rotate-180" : ""}`} />
                 </button>
 
-                {/* MODERNISED MEGA MENU PANEL */}
+                {/* MEGA MENU PANEL */}
                 {activeDropdown === "mega-menu" && (
                   <div
                     style={{
@@ -542,24 +551,10 @@ export function Navbar({
       {/* Mobile menu drawer */}
       {mobileOpen && (
         <div
-          style={{ background: "#1c1917", fontFamily: "'Inter', sans-serif", position: "sticky", top: "68px", zIndex: 40 }}
-          className="lg:hidden"
+          style={{ background: "#1c1917", fontFamily: "'Inter', sans-serif", position: "fixed", top: scrolled ? "108px" : "118px", left: 0, right: 0, bottom: 0, zIndex: 40 }}
+          className="lg:hidden flex flex-col"
         >
-          {/* Pencarian khusus di dalam menu drawer mobile */}
-          <div style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }} className="flex items-center gap-3 px-6 py-3">
-            <Search size={14} style={{ color: "#52525b" }} />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && { handleSearch, setMobileOpen: () => setMobileOpen(false) }}
-              placeholder='Cari "semen", "pipa", "cat"…'
-              style={{ background: "transparent", border: "none", outline: "none", fontSize: "0.875rem", color: "#f4f4f5", width: "100%" }}
-              className="placeholder-stone-500"
-            />
-          </div>
-
-          <div className="px-6 py-2 max-h-[60vh] overflow-y-auto">
+          <div className="flex-1 overflow-y-auto px-6 py-2">
             {CATEGORIES.map((cat, i) => {
               const Icon = cat.icon;
               const active = isRouteActive(cat.label);
@@ -632,7 +627,8 @@ export function Navbar({
             })}
           </div>
 
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", background: "#141413" }} className="p-4 flex gap-3">
+          {/* Bottom Bar Mobile Menu Drawer */}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", background: "#141413" }} className="p-4 flex gap-3 shrink-0">
             <button
               onClick={() => { onNavigate?.("/material-bangunan"); setMobileOpen(false); }}
               style={{
@@ -667,20 +663,9 @@ export function Navbar({
                   border: "none", cursor: "pointer",
                 }}
               >
-                <User size={14} />
                 MASUK
               </button>
             )}
-
-            <button
-              style={{
-                background: "transparent", border: "1px solid rgba(255,255,255,0.12)",
-                color: "#a8a29e", fontSize: "0.8rem", fontWeight: 600,
-                borderRadius: "8px", flex: 1, padding: "11px", cursor: "pointer",
-              }}
-            >
-              DAFTAR
-            </button>
           </div>
         </div>
       )}
