@@ -69,10 +69,9 @@ export function HeroBanner() {
         background: slide.bg,
         transition: "background 0.6s ease",
         fontFamily: "'Inter', sans-serif",
-        overflow: "hidden",
         position: "relative",
       }}
-      className="max-md:overflow-visible"
+      className="overflow-hidden max-md:overflow-visible"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div
