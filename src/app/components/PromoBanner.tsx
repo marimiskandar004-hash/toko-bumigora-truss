@@ -88,12 +88,11 @@ export function PromoBanner() {
                 alignItems: "center",
                 justifyContent: "space-between",
                 gap: "16px",
-                overflow: "hidden",
                 position: "relative",
                 cursor: "pointer",
                 transition: "transform 0.2s",
               }}
-              className="hover:scale-[1.01]"
+              className="hover:scale-[1.01] overflow-hidden max-md:overflow-visible"
             >
               <div style={{ position: "relative", zIndex: 1 }}>
                 <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", color: "#38bdf8", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
@@ -129,7 +128,8 @@ export function PromoBanner() {
               <img
                 src="https://images.unsplash.com/photo-1685464196387-854858ce0f4f?w=200&h=200&fit=crop&auto=format"
                 alt="Konstruksi"
-                style={{ width: "120px", height: "120px", objectFit: "cover", borderRadius: "12px", opacity: 0.85, flexShrink: 0 }}
+                style={{ objectFit: "cover", borderRadius: "12px", opacity: 0.85, flexShrink: 0 }}
+                className="w-[120px] h-[120px] max-md:w-[96px] max-md:h-[96px]"
               />
               {/* Decorative circle */}
               <div
@@ -143,6 +143,7 @@ export function PromoBanner() {
                   background: "rgba(56,189,248,0.06)",
                   pointerEvents: "none",
                 }}
+                className="max-md:hidden"
               />
             </div>
 
@@ -156,12 +157,11 @@ export function PromoBanner() {
                 alignItems: "center",
                 justifyContent: "space-between",
                 gap: "16px",
-                overflow: "hidden",
                 position: "relative",
                 cursor: "pointer",
                 transition: "transform 0.2s",
               }}
-              className="hover:scale-[1.01]"
+              className="hover:scale-[1.01] overflow-hidden max-md:overflow-visible"
             >
               <div style={{ position: "relative", zIndex: 1 }}>
                 <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", color: "#fb923c", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
@@ -197,7 +197,8 @@ export function PromoBanner() {
               <img
                 src="https://images.unsplash.com/photo-1669170930713-f7c778496177?w=200&h=200&fit=crop&auto=format"
                 alt="Alat berat"
-                style={{ width: "120px", height: "120px", objectFit: "cover", borderRadius: "12px", opacity: 0.85, flexShrink: 0 }}
+                style={{ objectFit: "cover", borderRadius: "12px", opacity: 0.85, flexShrink: 0 }}
+                className="w-[120px] h-[120px] max-md:w-[96px] max-md:h-[96px]"
               />
               <div
                 style={{
@@ -210,6 +211,7 @@ export function PromoBanner() {
                   background: "rgba(251,146,60,0.06)",
                   pointerEvents: "none",
                 }}
+                className="max-md:hidden"
               />
             </div>
           </div>
