@@ -464,9 +464,72 @@ export function Navbar({
       {/* Mobile menu drawer panel */}
       {mobileOpen && (
         <div
-          style={{ background: "#1c1917", fontFamily: "'Inter', sans-serif", position: "fixed", top: "115px", left: 0, right: 0, bottom: 0, zIndex: 9999 }}
+          style={{
+            background: "#1c1917",
+            fontFamily: "'Inter', sans-serif",
+            position: "fixed",
+            top: "115px",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 9999,
+          }}
           className="lg:hidden flex flex-col w-full"
         >
+          {/* Drawer header */}
+          <div
+            style={{
+              padding: "14px 18px",
+              borderBottom: "1px solid rgba(255,255,255,0.08)",
+              background: "#141413",
+              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 10,
+                  background: "rgba(255,255,255,0.08)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#ea580c",
+                }}
+              >
+                <Menu size={18} />
+              </div>
+              <div>
+                <div style={{ color: "#ffffff", fontWeight: 800, fontSize: "0.9rem", lineHeight: 1.1 }}>Kategori & Menu</div>
+                <div style={{ color: "rgba(255,255,255,0.65)", fontWeight: 600, fontSize: "0.72rem", marginTop: 1 }}>Pilih kategori untuk melihat sub-kategori</div>
+              </div>
+            </div>
+            <button
+              onClick={() => setMobileOpen(false)}
+              style={{
+                background: "rgba(255,255,255,0.08)",
+                color: "#ffffff",
+                border: "none",
+                width: 36,
+                height: 36,
+                borderRadius: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+              aria-label="Tutup menu"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Content */}
           <div className="flex-1 overflow-y-auto px-6 py-4 w-full">
             {CATEGORIES.map((cat, i) => {
               const Icon = cat.icon;
@@ -477,32 +540,91 @@ export function Navbar({
               return (
                 <div key={cat.label} style={{ borderBottom: i < CATEGORIES.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
                   <button
-                    onClick={() => { triggerCategoryPulse(cat.label); setMobileExpanded(mobileExpanded === cat.label ? null : cat.label); }}
+                    onClick={() => {
+                      triggerCategoryPulse(cat.label);
+                      setMobileExpanded(mobileExpanded === cat.label ? null : cat.label);
+                    }}
                     style={{
-                      color: highlighted ? "#ffffff" : "#d6d3d1", fontSize: "0.85rem", fontWeight: highlighted ? 700 : 500, width: "100%",
-                      display: "flex", alignItems: "center", gap: "10px", padding: "14px 10px",
-                      background: highlighted ? CATEGORY_HIGHLIGHT.surfaceBg : "transparent",
-                      border: "none", cursor: "pointer",
+                      color: highlighted ? "#ffffff" : "#d6d3d1",
+                      fontSize: "0.9rem",
+                      fontWeight: highlighted ? 800 : 600,
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      padding: "14px 10px",
+                      background: highlighted ? "rgba(234, 88, 12, 0.12)" : "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                      borderRadius: 12,
                     }}
                   >
-                    <Icon size={15} style={{ color: highlighted ? CATEGORY_HIGHLIGHT.orangeLight : CATEGORY_HIGHLIGHT.orange }} />
-                    <span onClick={(e) => { e.stopPropagation(); navigateToCategory(cat.label, true); }} className="flex-1 text-left">
+                    <Icon size={16} style={{ color: highlighted ? CATEGORY_HIGHLIGHT.orangeLight : CATEGORY_HIGHLIGHT.orange }} />
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigateToCategory(cat.label, true);
+                      }}
+                      className="flex-1 text-left"
+                    >
                       {cat.label}
                     </span>
-                    <ChevronDown size={14} style={{ transform: mobileExpanded === cat.label ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", color: "#78716c" }} />
+                    <ChevronDown
+                      size={16}
+                      style={{
+                        transform: mobileExpanded === cat.label ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.2s",
+                        color: "rgba(255,255,255,0.6)",
+                      }}
+                    />
                   </button>
+
                   {mobileExpanded === cat.label && (
-                    <div className="pb-3 pl-6 flex flex-col bg-black/10 rounded-lg mt-1">
-                      {cat.sub.map((item) => (
-                        <button
-                          key={item}
-                          onClick={() => { onNavigate?.(toPath(cat.label) + "/" + item.toLowerCase().replace(/&/g, "dan").replace(/\s+/g, "-")); setMobileOpen(false); }}
-                          style={{ fontSize: "0.8rem", color: "#a8a29e", padding: "8px 0", display: "flex", alignItems: "center", gap: "8px", background: "transparent", border: "none", cursor: "pointer", width: "100%", textAlign: "left" }}
-                        >
-                          <span style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#57534e" }} />
-                          {item}
-                        </button>
-                      ))}
+                    <div
+                      style={{
+                        marginLeft: 6,
+                        marginTop: 8,
+                        padding: "10px 10px",
+                        background: "rgba(0,0,0,0.16)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        borderRadius: 12,
+                      }}
+                    >
+                      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                        {cat.sub.map((item) => (
+                          <button
+                            key={item}
+                            onClick={() => {
+                              onNavigate?.(
+                                toPath(cat.label) +
+                                  "/" +
+                                  item
+                                    .toLowerCase()
+                                    .replace(/&/g, "dan")
+                                    .replace(/\s+/g, "-")
+                              );
+                              setMobileOpen(false);
+                            }}
+                            style={{
+                              fontSize: "0.83rem",
+                              color: "#a8a29e",
+                              padding: "10px 8px",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 10,
+                              background: "transparent",
+                              border: "none",
+                              cursor: "pointer",
+                              width: "100%",
+                              textAlign: "left",
+                              borderRadius: 10,
+                            }}
+                          >
+                            <span style={{ width: 6, height: 6, borderRadius: 999, background: "rgba(234, 88, 12, 0.55)" }} />
+                            {item}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -510,24 +632,67 @@ export function Navbar({
             })}
           </div>
 
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", background: "#141413" }} className="p-4 flex gap-3 shrink-0 w-full">
+          {/* Drawer footer */}
+          <div
+            style={{ borderTop: "1px solid rgba(255,255,255,0.08)", background: "#141413" }}
+            className="p-4 flex gap-3 shrink-0 w-full"
+          >
             <button
-              onClick={() => { onNavigate?.("/material-bangunan"); setMobileOpen(false); }}
-              style={{ background: "#ffffff", color: "#1c1917", fontSize: "0.85rem", fontWeight: 700, borderRadius: "8px", padding: "12px", flex: 1, border: "none", cursor: "pointer" }}
+              onClick={() => {
+                onNavigate?.("/material-bangunan");
+                setMobileOpen(false);
+              }}
+              style={{
+                background: "#ffffff",
+                color: "#1c1917",
+                fontSize: "0.85rem",
+                fontWeight: 800,
+                borderRadius: 12,
+                padding: "12px 10px",
+                flex: 1,
+                border: "none",
+                cursor: "pointer",
+              }}
             >
               KATALOG
             </button>
             {user ? (
               <button
-                onClick={() => { onLogout?.(); setMobileOpen(false); }}
-                style={{ background: "#dc2626", color: "#ffffff", fontSize: "0.85rem", fontWeight: 700, borderRadius: "8px", flex: 1, padding: "12px", border: "none", cursor: "pointer" }}
+                onClick={() => {
+                  onLogout?.();
+                  setMobileOpen(false);
+                }}
+                style={{
+                  background: "#dc2626",
+                  color: "#ffffff",
+                  fontSize: "0.85rem",
+                  fontWeight: 800,
+                  borderRadius: 12,
+                  flex: 1,
+                  padding: "12px 10px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
               >
                 KELUAR
               </button>
             ) : (
               <button
-                onClick={() => { onLoginClick?.(); setMobileOpen(false); }}
-                style={{ background: "#ea580c", color: "#ffffff", fontSize: "0.85rem", fontWeight: 700, borderRadius: "8px", flex: 1, padding: "12px", border: "none", cursor: "pointer" }}
+                onClick={() => {
+                  onLoginClick?.();
+                  setMobileOpen(false);
+                }}
+                style={{
+                  background: "#ea580c",
+                  color: "#ffffff",
+                  fontSize: "0.85rem",
+                  fontWeight: 800,
+                  borderRadius: 12,
+                  flex: 1,
+                  padding: "12px 10px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
               >
                 MASUK
               </button>
