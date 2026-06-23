@@ -112,6 +112,10 @@ export function AuthModal({ onClose }: AuthModalProps) {
           padding: "32px",
           position: "relative",
           boxShadow: "0 24px 64px rgba(0,0,0,0.25)",
+          maxHeight: "min(85dvh, 720px)",
+          overflow: "auto",
+          WebkitOverflowScrolling: "touch",
+          paddingBottom: "calc(32px + env(safe-area-inset-bottom))",
         }}
         onClick={(e) => e.stopPropagation()}
       >

@@ -50,7 +50,9 @@ export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: Cart
           position: "fixed",
           top: 0,
           right: 0,
-          bottom: 0,
+          // gunakan 100dvh agar stabil saat browser mobile mengubah tinggi viewport
+          height: "100dvh",
+          bottom: "auto",
           width: "min(420px, 100vw)",
           background: "#ffffff",
           zIndex: 201,
@@ -151,7 +153,14 @@ export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: Cart
         )}
 
         {/* Items */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px" }}>
+        <div
+          style={{
+            flex: 1,
+            overflowY: "auto",
+            padding: "16px 24px",
+            paddingBottom: "calc(16px + env(safe-area-inset-bottom))",
+          }}
+        >
           {items.length === 0 ? (
             <div
               style={{
@@ -309,6 +318,7 @@ export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: Cart
               borderTop: "1px solid #f5f5f4",
               background: "#ffffff",
               flexShrink: 0,
+              paddingBottom: "calc(20px + env(safe-area-inset-bottom))",
             }}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
