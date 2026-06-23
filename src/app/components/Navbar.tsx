@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Search, ShoppingCart, User, Phone, MapPin, Menu, X,
   ChevronDown, Tag, Truck, HardHat, Heart, LogOut,
@@ -37,6 +37,8 @@ export function Navbar({
   isCategoryActive,
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
+  const [drawerTop, setDrawerTop] = useState<number>(115);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,6 +57,33 @@ export function Navbar({
     if (userMenuOpen) document.addEventListener("click", handler);
     return () => document.removeEventListener("click", handler);
   }, [userMenuOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const computeTop = () => {
+      const el = headerRef.current;
+      const rect = el?.getBoundingClientRect();
+      if (!rect) {
+        setDrawerTop(115);
+        return;
+      }
+      // drawer should start right after the visible header area
+      setDrawerTop(rect.bottom);
+    };
+
+    computeTop();
+    window.addEventListener("resize", computeTop);
+
+    // lock background scroll while drawer open
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("resize", computeTop);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [mobileOpen]);
 
   const navigateToCategory = (label: string, closeMobile = false) => {
     onCategoryNavigate(label);
@@ -115,6 +144,7 @@ export function Navbar({
 
       {/* Main header */}
       <header
+        ref={headerRef}
         style={{
           background: scrolled ? "rgba(234, 88, 12, 0.97)" : "#ea580c",
           backdropFilter: scrolled ? "blur(12px)" : "none",
@@ -468,11 +498,15 @@ export function Navbar({
             background: "#1c1917",
             fontFamily: "'Inter', sans-serif",
             position: "fixed",
-            top: "115px",
+            // use runtime header height to avoid cut-off on small devices
+            top: drawerTop,
             left: 0,
             right: 0,
-            bottom: 0,
+            // use d vh to avoid mobile browser UI resizing issues
+            height: `calc(100dvh - ${drawerTop}px)`,
             zIndex: 9999,
+            // prevent overscroll bounce showing content under the drawer
+            overscrollBehavior: "contain",
           }}
           className="lg:hidden flex flex-col w-full"
         >
@@ -530,7 +564,10 @@ export function Navbar({
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto px-6 py-4 w-full">
+          <div
+            className="flex-1 overflow-y-auto px-6 py-4 w-full"
+            style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
+          >
             {CATEGORIES.map((cat, i) => {
               const Icon = cat.icon;
               const active = isCategoryActive(cat.label);
@@ -634,7 +671,11 @@ export function Navbar({
 
           {/* Drawer footer */}
           <div
-            style={{ borderTop: "1px solid rgba(255,255,255,0.08)", background: "#141413" }}
+            style={{
+              borderTop: "1px solid rgba(255,255,255,0.08)",
+              background: "#141413",
+              paddingBottom: "calc(0.5rem + env(safe-area-inset-bottom))",
+            }}
             className="p-4 flex gap-3 shrink-0 w-full"
           >
             <button
