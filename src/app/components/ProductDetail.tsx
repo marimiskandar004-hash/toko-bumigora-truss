@@ -69,8 +69,11 @@ export function ProductDetail({ id, onAddToCart, onNavigate, products = [] }: Pr
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f5f5f4", padding: "2rem 0" }}>
-      <div className="max-w-6xl mx-auto px-4">
+    <div
+      style={{ minHeight: "100vh", background: "#f5f5f4", padding: "2rem 0" }}
+      className="max-sm:pt-6 max-sm:pb-10"
+    >
+      <div className="max-w-6xl mx-auto px-4 max-sm:px-3">
         {/* Tombol Kembali */}
         <button
           onClick={() => window.history.back()}
@@ -100,13 +103,25 @@ export function ProductDetail({ id, onAddToCart, onNavigate, products = [] }: Pr
             gap: "2.5rem",
             padding: "2.5rem",
           }}
+          className="max-sm:gap-6 max-sm:p-5 max-sm:grid-cols-1"
         >
           {/* Sisi Kiri: Gambar Produk */}
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", background: "#fafafa", borderRadius: "8px", padding: "1rem" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "#fafafa",
+              borderRadius: "8px",
+              padding: "1rem",
+            }}
+            className="max-sm:p-3"
+          >
             <img
               src={product.image || product.image_url || "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=500"}
               alt={product.name}
               style={{ maxWidth: "100%", maxHeight: "400px", objectFit: "contain", borderRadius: "8px" }}
+              className="max-sm:max-h-[240px]"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=500";
               }}
