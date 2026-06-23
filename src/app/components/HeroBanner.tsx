@@ -72,6 +72,7 @@ export function HeroBanner() {
         overflow: "hidden",
         position: "relative",
       }}
+      className="max-md:overflow-visible"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div
@@ -82,7 +83,7 @@ export function HeroBanner() {
             minHeight: "420px",
             alignItems: "center",
           }}
-          className="max-md:grid-cols-1"
+          className="max-md:grid-cols-1 max-md:min-h-[min(380px,70vh)]"
         >
           {/* Text side */}
           <div
@@ -236,14 +237,11 @@ export function HeroBanner() {
       {/* Controls */}
       <div
         style={{
-          position: "absolute",
-          bottom: "20px",
-          left: "50%",
-          transform: "translateX(-50%)",
           display: "flex",
           alignItems: "center",
           gap: "16px",
         }}
+        className="absolute bottom-[20px] left-1/2 -translate-x-1/2 max-md:static max-md:mt-6 max-md:left-auto max-md:transform-none"
       >
         <button
           onClick={() => go(-1)}
